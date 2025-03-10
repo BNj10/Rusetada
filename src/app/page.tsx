@@ -1,20 +1,23 @@
 import Image from "next/image";
 import { Navigation } from "@/components/common/nav-bar/page";
+import { Card } from "@/components/common/card/page";
+import { Form } from "@/components/common/form/page";
 
 export default function Home() {
   return (
     <div
       style={{
-        backgroundImage: "url('/path/to/your/background-image.jpg')",
+        backgroundImage: "url('/people.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        height: "100vh",
+        height: "100%",
       }}
     >
       <Navigation />
-      <div>
-        {/* Your other content here */}
-      </div>
+      <section className="h-screen w-screen flex flex-col justify-center items-center p-20">
+        {/* <Card/> */}
+        <Form/>
+      </section>
     </div>
   );
 }

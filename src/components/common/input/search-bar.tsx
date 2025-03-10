@@ -14,12 +14,12 @@ export const SearchBar = () => {
             <input
                 type="text"
                 className="px-4 py-2 w-full"
-                placeholder="Search for random"
+                placeholder="Search for randomS"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
             />
             <button
-                className="bg-blue-500 text-white px-4 py-2 rounded-r-md"
+                className="bg-blue-800 text-white px-4 py-2 rounded-r-md"
                 onClick={handleSearch}
             >
                 Search

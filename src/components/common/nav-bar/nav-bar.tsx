@@ -3,7 +3,7 @@ import { SearchBar } from '../input/search-bar';
 
 export const Navigation = () => {
     return (
-        <div className="px-4 py-4 bg-gray-800">
+        <div className="sticky top-0 left-0 right-0 px-4 py-4 bg-gray-800 z-50">
             <div className="flex items-center">
                 <div className=" text-white font-bold px-5">
                     <Image
@@ -18,7 +18,7 @@ export const Navigation = () => {
                 </div>
                 <div className="bg-gray-500 flex-none ml-auto">
                     <div className="relative justify-center">
-                        <SearchBar/>
+                        <SearchBar />
                     </div>
                 </div>
             </div>
