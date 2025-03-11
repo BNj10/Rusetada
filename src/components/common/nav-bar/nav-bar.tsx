@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import { SearchBar } from '../input/search-bar';
 
 export const Navigation = () => {
     return (
@@ -15,11 +14,6 @@ export const Navigation = () => {
                 </div>
                 <div className="align-middle text-white text-3xl font-bold">
                     Rusetada
-                </div>
-                <div className="bg-gray-500 flex-none ml-auto">
-                    <div className="relative justify-center">
-                        <SearchBar />
-                    </div>
                 </div>
             </div>
         </div>
