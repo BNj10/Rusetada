@@ -5,7 +5,7 @@ import { Toast } from "@/components/common/toast/page";
 import List from "@/components/features/user-table/user-list";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 import Footer  from "@/components/common/footer/footer";
-import { db } from "@/firebase-config";
+import { db } from "../firebase-config";
 import { useState } from "react";
 
 async function addUsers(name: string) {
