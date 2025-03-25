@@ -8,15 +8,12 @@ const UserList = ({ users }: UserProp) => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
 
-    // Calculate the items to display on the current page
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = users.slice(indexOfFirstItem, indexOfLastItem);
 
-    // Calculate the total number of pages
     const totalPages = Math.ceil(users.length / itemsPerPage);
 
-    // Handle page change
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
     };
@@ -24,10 +21,10 @@ const UserList = ({ users }: UserProp) => {
     return (
         <div className="flex flex-col items-center">
             <div className="overflow-x-auto z-50 relative justify-center">
-                <table className="min-w-100 bg-white border border-gray-200">
+                <table className="min-w-100 bg-white border border-black text-black">
                     <thead>
                         <tr>
-                            <th className="py-2 px-4 border-b">Name</th>
+                            <th className="py-2 px-4 border-b">Name(s)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -43,7 +40,7 @@ const UserList = ({ users }: UserProp) => {
                 {Array.from({ length: totalPages }, (_, index) => (
                     <button
                         key={index}
-                        className={`px-4 py-2 mx-1 border rounded ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                        className={`px-4 py-2 mx-1 border rounded ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-black'}`}
                         onClick={() => handlePageChange(index + 1)}
                     >
                         {index + 1}

@@ -51,7 +51,6 @@ export default function Home() {
 
   const fetchRandom = async () => {     
   try {
-    setLoading(true);
     const users = await fetchUsers();
     setUsers(users);
     setLoading(false);
@@ -66,13 +65,20 @@ export default function Home() {
     if (name) {
       try {
         setLoading(true);
+        setShowList(false);
         const newName = capitalizeFirstLetter(name);
+        await handleRedundance(name);
         await addUsers(newName);
         setMsg(`${name} added successfully`);
+        setName('');
+        if(showList)
+        {
+          setUsers((prevUsers) => [...prevUsers, { name: newName }]);
+        }
         handleShowToast();
         setLoading(false);
+        setShowList(true);
       } catch {
-        setMsg('Failed to add name');
         handleShowToast();
         setLoading(false);
       }
@@ -81,17 +87,18 @@ export default function Home() {
     }
   };
 
-  const handleShowList = () => {
+  const handleShowList = async() => {
     try {
       if (showList) {
         setShowList(false);
         setButtonText('See list');
       } else {
+        setLoading(true);
         setButtonText('Hide list');
-        setShowList(true);
-        fetchRandom();
+        await fetchRandom();
         setMsg('Names retrieved successfully!');
         handleShowToast();
+        setShowList(true);
       }
     } catch {
       setMsg('Failed to fetch users');
@@ -99,25 +106,36 @@ export default function Home() {
     }
   };
 
+  const handleRedundance = async(name : string) =>
+  {
+    const user = users.find((user) => user.name === name);
+    if(user)
+    {
+      setMsg('Name already exists');
+      handleShowToast();
+      throw new Error('Name already exists.');
+    }
+  }
+
   return (
     <div
       style={{
         backgroundImage: "url('/people.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        height: "100%",
+        minHeight: "100vh",
       }}
     >
       <Navigation />
       <div>
         <section className="h-screen w-screen flex flex-row justify-center items-center">
-          <div className="flex flex-col bg-gray-100 shadow-md rounded-lg p-15">
+          <div className="flex flex-col bg-gray-100 shadow-md rounded-lg p-15 text-black">
             <h1 className="text-3xl font-bold">Join Us!</h1>
             <p>Share your name and be random.</p>
             <input
               type="text"
               placeholder="Enter your name"
-              className="mt-2 p-2 border rounded"
+              className="mt-2 p-2 border rounded text-black"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
