@@ -5,7 +5,7 @@ import { Toast } from "@/components/common/toast/page";
 import List from "@/components/features/user-table/user-list";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 import Footer  from "@/components/common/footer/footer";
-import { db } from "../firebase-config";
+import { db } from "@/firebase-config";
 import { useState } from "react";
 
 async function addUsers(name: string) {
@@ -64,35 +64,40 @@ export default function Home() {
   const addUser = async () => {
     if (name) {
       try {
+
         setLoading(true);
-        setShowList(false);
         const newName = capitalizeFirstLetter(name);
+        await fetchUsers();
         await handleRedundance(name);
         await addUsers(newName);
         setMsg(`${name} added successfully`);
         setName('');
-        if(showList)
-        {
-          setUsers((prevUsers) => [...prevUsers, { name: newName }]);
-        }
+        setUsers((prevUsers) => [...prevUsers, { name: newName }]);
         handleShowToast();
         setLoading(false);
-        setShowList(true);
-      } catch {
+
+      } 
+      catch 
+      {
         handleShowToast();
         setLoading(false);
       }
-    } else {
+    } 
+    else 
+    {
       setShowToast(false);
     }
   };
 
   const handleShowList = async() => {
     try {
-      if (showList) {
+      if (showList) 
+      {
         setShowList(false);
         setButtonText('See list');
-      } else {
+      } 
+      else 
+      {
         setLoading(true);
         setButtonText('Hide list');
         await fetchRandom();
@@ -100,7 +105,9 @@ export default function Home() {
         handleShowToast();
         setShowList(true);
       }
-    } catch {
+    } 
+    catch 
+    {
       setMsg('Failed to fetch users');
       handleShowToast();
     }
@@ -154,11 +161,11 @@ export default function Home() {
           </div>
         </section>
         {loading && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10">
             <div className="loader">Loading...</div>
           </div>
         )}
-        {showList && <List users={users} />}
+        {showList && !loading && <List users={users} />}
       </div>
       {showToast && (
         <Toast

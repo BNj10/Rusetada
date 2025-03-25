@@ -6,20 +6,39 @@ interface UserProp {
 
 const UserList = ({ users }: UserProp) => {
     const [currentPage, setCurrentPage] = useState(1);
+    const [currentBatch, setCurrentBatch] = useState(0);
     const itemsPerPage = 5;
+    const buttonsPerBatch = 5;
 
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = users.slice(indexOfFirstItem, indexOfLastItem);
+    const currentItems = users.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
     const totalPages = Math.ceil(users.length / itemsPerPage);
+    const totalBatches = Math.ceil(totalPages / buttonsPerBatch);
 
     const handlePageChange = (pageNumber: number) => {
-        setCurrentPage(pageNumber);
+        if (pageNumber >= 1 && pageNumber <= totalPages)
+        {
+            setCurrentPage(pageNumber);
+        }
     };
 
+    const handleNextBatch = () => {
+        if (currentBatch < totalBatches - 1) {
+            setCurrentBatch(currentBatch + 1);
+        }
+    };
+
+    const handlePrevBatch = () => {
+        if (currentBatch > 0) {
+            setCurrentBatch(currentBatch - 1);
+        }
+    };
+
+    const startPage = currentBatch * buttonsPerBatch + 1;
+    const endPage = Math.min(startPage + buttonsPerBatch - 1, totalPages);
+
     return (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center py-4">
             <div className="overflow-x-auto z-50 relative justify-center">
                 <table className="min-w-100 bg-white border border-black text-black">
                     <thead>
@@ -36,16 +55,32 @@ const UserList = ({ users }: UserProp) => {
                     </tbody>
                 </table>
             </div>
-            <div className="mt-4">
-                {Array.from({ length: totalPages }, (_, index) => (
+            <div className="mt-4 flex flex-row items-center">
+                {currentBatch > 0 && (
                     <button
-                        key={index}
-                        className={`px-4 py-2 mx-1 border rounded ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-black'}`}
-                        onClick={() => handlePageChange(index + 1)}
+                        className="px-4 py-2 mx-1 border rounded bg-blue-500 text-white hover:bg-blue-700"
+                        onClick={handlePrevBatch}
                     >
-                        {index + 1}
+                        &lt;
+                    </button>
+                )}
+                {Array.from({ length: endPage - startPage + 1 }, (_, index) => (
+                    <button
+                        key={startPage + index}
+                        className={`px-4 py-2 mx-1 border rounded ${currentPage === startPage + index ? 'bg-blue-500 text-white' : 'bg-black text-white hover:bg-gray-700'}`}
+                        onClick={() => handlePageChange(startPage + index)}
+                    >
+                        {startPage + index}
                     </button>
                 ))}
+                {currentBatch < totalBatches - 1 && (
+                    <button
+                        className="px-4 py-2 mx-1 border rounded bg-blue-500 text-white hover:bg-blue-700"
+                        onClick={handleNextBatch}
+                    >
+                        &gt;
+                    </button>
+                )}
             </div>
         </div>
     );
